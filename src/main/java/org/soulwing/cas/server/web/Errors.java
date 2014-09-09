@@ -16,7 +16,15 @@
  * limitations under the License.
  *
  */
+package org.soulwing.cas.server.web;
+
 /**
- * JavaServer Faces backing beans
+ * An object that is updated when errors occur in handling a form action.
+ *
+ * @author Carl Harris
  */
-package org.soulwing.cas.server.facelets;
+public interface Errors {
+
+  void addError(String message, Object... args);
+
+}

@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-package org.soulwing.cas.server.facelets;
+package org.soulwing.cas.server.web;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyArray;
@@ -35,6 +35,8 @@ import org.soulwing.cas.server.CredentialFactory;
 import org.soulwing.cas.server.service.AuthenticationException;
 import org.soulwing.cas.server.service.LoginService;
 import org.soulwing.cas.server.service.NotAuthenticException;
+import org.soulwing.cas.server.web.Errors;
+import org.soulwing.cas.server.web.LoginBean;
 
 /**
  * Unit tests for {@link LoginBean}.

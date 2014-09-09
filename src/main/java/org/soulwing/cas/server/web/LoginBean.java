@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-package org.soulwing.cas.server.facelets;
+package org.soulwing.cas.server.web;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
