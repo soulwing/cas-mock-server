@@ -24,9 +24,15 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
+import java.util.Collections;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
 import org.jmock.Expectations;
 import org.jmock.auto.Mock;
 import org.jmock.integration.junit4.JUnitRuleMockery;
+import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,8 +41,6 @@ import org.soulwing.cas.server.CredentialFactory;
 import org.soulwing.cas.server.service.AuthenticationException;
 import org.soulwing.cas.server.service.LoginService;
 import org.soulwing.cas.server.service.NotAuthenticException;
-import org.soulwing.cas.server.web.Errors;
-import org.soulwing.cas.server.web.LoginBean;
 
 /**
  * Unit tests for {@link LoginBean}.
@@ -45,8 +49,14 @@ import org.soulwing.cas.server.web.LoginBean;
  */
 public class LoginBeanTest {
 
+  private static final String LOGIN_URL = "someLoginUrl";
+  
   @Rule
-  public final JUnitRuleMockery context = new JUnitRuleMockery();
+  public final JUnitRuleMockery context = new JUnitRuleMockery() {
+    {
+      setImposteriser(ClassImposteriser.INSTANCE);
+    }
+  };
   
   @Mock
   private CredentialFactory credentialFactory;
@@ -59,6 +69,12 @@ public class LoginBeanTest {
   
   @Mock
   private Errors errors;
+  
+  @Mock
+  private FacesContext facesContext;
+  
+  @Mock
+  private ExternalContext externalContext;
   
   private LoginBean bean = new LoginBean();
   
@@ -74,6 +90,7 @@ public class LoginBeanTest {
     bean.credentialFactory = credentialFactory;
     bean.loginService = loginService;
     bean.errors = errors;
+    bean.facesContext = facesContext;
     bean.init();
   }
 
@@ -83,10 +100,15 @@ public class LoginBeanTest {
       {
         oneOf(loginService).authenticate(credential);
         will(returnValue(null));
+        oneOf(facesContext).getExternalContext();
+        will(returnValue(externalContext));
+        oneOf(externalContext).redirect(with(LOGIN_URL));
+        oneOf(facesContext).responseComplete();
       }
     });
     
-    assertThat(bean.login(), is(equalTo(LoginBean.SUCCESS_OUTCOME_ID)));
+    bean.setLoginUrl(LOGIN_URL);
+    assertThat(bean.login(), is(nullValue()));
   }
   
   @Test
@@ -114,4 +136,21 @@ public class LoginBeanTest {
 
     assertThat(bean.login(), is(equalTo(LoginBean.FAILURE_OUTCOME_ID)));
   }
+  
+  @Test
+  public void testGetLoginUrl() throws Exception {
+    context.checking(new Expectations() {
+      {
+        oneOf(facesContext).getExternalContext();
+        will(returnValue(externalContext));
+        oneOf(externalContext).getRequestMap();
+        will(returnValue(Collections.singletonMap(LoginServlet.LOGIN_URL_ATTR, 
+            LOGIN_URL)));
+      }
+    });
+    
+    assertThat(bean.getLoginUrl(), is(equalTo(LOGIN_URL)));
+    assertThat(bean.getLoginUrl(), is(equalTo(LOGIN_URL)));
+  }
+  
 }

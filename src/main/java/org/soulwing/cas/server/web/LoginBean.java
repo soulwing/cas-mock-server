@@ -18,8 +18,12 @@
  */
 package org.soulwing.cas.server.web;
 
+import java.io.IOException;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -51,6 +55,11 @@ public class LoginBean {
   @Inject
   protected Errors errors;
   
+  @Inject
+  protected FacesContext facesContext;
+  
+  private String loginUrl;
+  
   private Credential credential;
   
   
@@ -60,6 +69,27 @@ public class LoginBean {
    */
   public Credential getCredential() {
     return credential;
+  }
+
+  /**
+   * Gets the {@code loginUrl} property.
+   * @return property value
+   */
+  public String getLoginUrl() {
+    if (loginUrl == null) {
+      ExternalContext externalContext = facesContext.getExternalContext();
+      loginUrl = (String) externalContext.getRequestMap().get(
+          LoginServlet.LOGIN_URL_ATTR);
+    }
+    return loginUrl;
+  }
+
+  /**
+   * Sets the {@code loginUrl} property.
+   * @param loginUrl the value to set
+   */
+  public void setLoginUrl(String loginUrl) {
+    this.loginUrl = loginUrl;
   }
 
   /**
@@ -78,13 +108,24 @@ public class LoginBean {
   public String login() {
     try {
       loginService.authenticate(credential);
-      return SUCCESS_OUTCOME_ID;
+      return redirect();
     }
     catch (NotAuthenticException ex) {
       errors.addError("invalidUsernameOrPassword");
       return null;
     }
     catch (AuthenticationException ex) {
+      return FAILURE_OUTCOME_ID;
+    }
+  }
+
+  private String redirect() {
+    try {
+      facesContext.getExternalContext().redirect(loginUrl);
+      facesContext.responseComplete();
+      return null;
+    }
+    catch (IOException ex) {
       return FAILURE_OUTCOME_ID;
     }
   }
