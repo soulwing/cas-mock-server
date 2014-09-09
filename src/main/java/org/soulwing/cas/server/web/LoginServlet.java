@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.UriBuilder;
 
 import org.soulwing.cas.server.LoginContext;
+import org.soulwing.cas.server.protocol.ProtocolConstants;
 import org.soulwing.cas.server.service.TicketService;
 
 /**

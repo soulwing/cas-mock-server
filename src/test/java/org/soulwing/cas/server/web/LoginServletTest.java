@@ -34,6 +34,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.soulwing.cas.server.LoginContext;
 import org.soulwing.cas.server.Ticket;
+import org.soulwing.cas.server.protocol.ProtocolConstants;
 import org.soulwing.cas.server.service.TicketService;
 
 /**

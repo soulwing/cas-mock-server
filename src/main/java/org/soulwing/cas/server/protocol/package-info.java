@@ -16,17 +16,7 @@
  * limitations under the License.
  *
  */
-package org.soulwing.cas.server.web;
-
 /**
- * CAS protocol constants.
- *
- * @author Carl Harris
+ * CAS protocol support
  */
-public interface ProtocolConstants {
-
-  String SERVICE_PARAM = "service";
-  
-  String TICKET_PARAM = "ticket";
-  
-}
+package org.soulwing.cas.server.protocol;
