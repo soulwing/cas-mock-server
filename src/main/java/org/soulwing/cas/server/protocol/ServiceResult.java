@@ -16,12 +16,13 @@
  * limitations under the License.
  *
  */
-/**
- * CAS protocol support
- */
-@javax.xml.bind.annotation.XmlSchema(
-    elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
-    namespace="http://www.yale.edu/tp/cas", 
-    xmlns = @javax.xml.bind.annotation.XmlNs(
-        namespaceURI = "http://www.yale.edu/tp/cas", prefix="cas"))
 package org.soulwing.cas.server.protocol;
+
+/**
+ * A marker interface for a service result.
+ *
+ * @author Carl Harris
+ */
+public interface ServiceResult {
+
+}

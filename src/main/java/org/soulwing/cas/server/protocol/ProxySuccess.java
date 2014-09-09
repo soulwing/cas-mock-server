@@ -16,12 +16,23 @@
  * limitations under the License.
  *
  */
-/**
- * CAS protocol support
- */
-@javax.xml.bind.annotation.XmlSchema(
-    elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
-    namespace="http://www.yale.edu/tp/cas", 
-    xmlns = @javax.xml.bind.annotation.XmlNs(
-        namespaceURI = "http://www.yale.edu/tp/cas", prefix="cas"))
 package org.soulwing.cas.server.protocol;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * An {@link ServiceResult} that represents a successful proxy outcome.
+ *
+ * @author Carl Harris
+ */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ProxySuccess implements ServiceResult {
+
+  @XmlElement
+  public String proxyTicket;
+  
+}

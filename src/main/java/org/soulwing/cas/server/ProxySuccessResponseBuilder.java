@@ -16,12 +16,20 @@
  * limitations under the License.
  *
  */
+package org.soulwing.cas.server;
+
 /**
- * CAS protocol support
+ * A builder for a successful proxy response.
+ *
+ * @author Carl Harris
  */
-@javax.xml.bind.annotation.XmlSchema(
-    elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
-    namespace="http://www.yale.edu/tp/cas", 
-    xmlns = @javax.xml.bind.annotation.XmlNs(
-        namespaceURI = "http://www.yale.edu/tp/cas", prefix="cas"))
-package org.soulwing.cas.server.protocol;
+public interface ProxySuccessResponseBuilder extends ServiceResponseBuilder {
+
+  /**
+   * Sets the proxy ticket for the response.
+   * @param ticket the ticket to set
+   * @return this builder
+   */
+  ProxySuccessResponseBuilder proxyTicket(String ticket);
+
+}

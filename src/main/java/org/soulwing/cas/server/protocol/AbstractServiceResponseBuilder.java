@@ -16,12 +16,29 @@
  * limitations under the License.
  *
  */
-/**
- * CAS protocol support
- */
-@javax.xml.bind.annotation.XmlSchema(
-    elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
-    namespace="http://www.yale.edu/tp/cas", 
-    xmlns = @javax.xml.bind.annotation.XmlNs(
-        namespaceURI = "http://www.yale.edu/tp/cas", prefix="cas"))
 package org.soulwing.cas.server.protocol;
+
+import org.soulwing.cas.server.ServiceResponse;
+import org.soulwing.cas.server.ServiceResponseBuilder;
+
+/**
+ * An abstract base for {@link ServiceResponseBuilder} implementations.
+ *
+ * @author Carl Harris
+ */
+abstract class AbstractServiceResponseBuilder 
+    implements ServiceResponseBuilder {
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ServiceResponse build() {
+    ServiceResponseBase response = new ServiceResponseBase();
+    response.result = getResult();
+    return response;
+  }
+
+  protected abstract ServiceResult getResult();
+  
+}
