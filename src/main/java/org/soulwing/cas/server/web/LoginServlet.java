@@ -23,9 +23,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.inject.Inject;
-import javax.servlet.Filter;
+import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,11 +35,10 @@ import org.soulwing.cas.server.protocol.ProtocolConstants;
 import org.soulwing.cas.server.service.TicketService;
 
 /**
- * A {@link Filter} that handles CAS login requests.
+ * A {@link Servlet} that handles CAS login requests.
  *
  * @author Carl Harris
  */
-@WebServlet(loadOnStartup = 1)
 public class LoginServlet extends HttpServlet {
 
   private static final long serialVersionUID = 4060870488735584997L;
