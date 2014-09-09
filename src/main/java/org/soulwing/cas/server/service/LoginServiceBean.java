@@ -19,9 +19,11 @@
 package org.soulwing.cas.server.service;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
 import org.soulwing.cas.server.Credential;
+import org.soulwing.cas.server.MutableLoginContext;
 
 /**
  * A {@link LoginService} implemented as a simple injectable bean.
@@ -32,6 +34,9 @@ import org.soulwing.cas.server.Credential;
 public class LoginServiceBean implements LoginService {
 
   static final String FAIL = "fail";
+  
+  @Inject
+  protected MutableLoginContext loginContext;
   
   /**
    * {@inheritDoc}
@@ -51,6 +56,8 @@ public class LoginServiceBean implements LoginService {
     if (!credential.getPassword().equals(credential.getUsername())) {
       throw new NotAuthenticException();
     }
+    
+    loginContext.setAuthenticUsername(credential.getUsername());
   }
 
 }
