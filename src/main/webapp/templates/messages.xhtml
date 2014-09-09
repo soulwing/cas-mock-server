@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:body>
+	<ui:composition>
+	  <h:panelGroup rendered="#{not empty facesContext.messageList}">
+			<div class='app-callout app-callout-#{facesContext.maximumSeverity.ordinal le 1 ? "warning" : "danger"}'>
+				<h4 class='app-callout-#{facesContext.maximumSeverity.ordinal le 1 ? "warning" : "danger"}'>
+				  #{messages[facesContext.maximumSeverity.ordinal le 1 ? "warningTitle" : "errorTitle"]}
+				</h4>
+				<h:messages />
+			</div>
+		</h:panelGroup>
+	</ui:composition>
+</h:body>
+
+</html>

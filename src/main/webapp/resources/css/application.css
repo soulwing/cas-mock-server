@@ -1,0 +1,113 @@
+body {
+	padding-top: 50px;
+	padding-bottom: 30px;
+}
+
+.form-control-feedback.glyphicon-exclamation-sign {
+	color: #d9534f;
+}
+
+.form-control-feedback.glyphicon-warning-sign {
+  color: #f0ad4e;
+}
+
+.progress-bar {
+	text-align: left;
+}
+
+.has-feedback .form-control-feedback {
+	position: absolute;
+	top: 0;
+	right: 15px;
+	display: block;
+	width: 34px;
+	height: 34px;
+	line-height: 34px;
+	text-align: center;
+}
+
+.button-bar {
+	text-align: right;
+	margin-bottom: 5px;
+}
+
+.theme-dropdown .dropdown-menu {
+	display: block;
+	position: static;
+	margin-bottom: 20px;
+}
+
+.theme-showcase>p>.btn {
+	margin: 5px 0;
+}
+
+.app-callout {
+	margin: 20px 0;
+	padding: 10px;
+	border-left: 3px solid #eee;
+}
+
+.app-callout-danger {
+	background-color: #fdf7f7;
+	border-color: #d9534f;
+}
+
+.app-callout-danger h4 {
+	color: #d9534f;
+	margin-top: 0;
+}
+
+.app-callout-warning {
+	background-color: #fcf8f2;
+	border-color: #f0ad4e;
+}
+
+.app-callout-warning h4 {
+	color: #f0ad4e;
+	margin-top: 0;
+}
+
+.jumbotron {
+	margin-top: 30px;
+}
+
+.container .panel {
+	margin-top: 30px;
+}
+
+.container .panel form {
+	margin-top: 20px;
+}
+
+.hidden {
+	display: none;
+}
+
+select {
+	margin-top: 7px;
+}
+
+table {
+	font-size: small;
+}
+
+td.column-nowrap {
+	white-space: nowrap;
+}
+
+td.column-width30 {
+	width: 30%;
+}
+
+td.table-tools a {
+	margin-right: 5px;
+}
+
+.tools-button.dropdown-menu {
+	left: initial;
+	right: 0;
+}
+
+.item-icon {
+	padding-right: 5px;
+}

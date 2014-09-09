@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:body>
+	<ui:composition template="/templates/masterTemplate.xhtml">
+		<ui:define name="windowTitle">
+      #{messages.loginTitle}
+    </ui:define>
+		<ui:define name="content">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">#{messages.loginSubtitle}</h1>
+				</div>
+				<div class="panel-body">
+					<p>
+						<h:outputText value="#{messages.loginDetail}" escape="false" />
+					</p>
+					<h:form id="compose" styleClass="form-horizontal">
+						<ui:include src="/templates/messages.xhtml" />
+						<div class="form-group">
+							<h:outputLabel for="username" styleClass="col-md-4 control-label">
+                #{messages.usernameLabel}
+              </h:outputLabel>
+							<div class="col-md-8">
+								<h:inputText id="username" required="true"
+									requiredMessage="#{messages.usernameRequired}"
+									styleClass="form-control"
+									value="#{loginBean.credential.username}" />
+							</div>
+						</div>
+            <div class="form-group">
+              <h:outputLabel for="password" styleClass="col-md-4 control-label">
+                #{messages.passwordLabel}
+              </h:outputLabel>
+              <div class="col-md-8">
+                <h:inputSecret id="password" required="true"
+                  requiredMessage="#{messages.passwordRequired}"
+                  styleClass="form-control"
+                  value="#{loginBean.credential.password}" />
+              </div>
+            </div>
+						<div class="form-group">
+							<div class="col-md-8 col-md-push-4">
+								<h:commandButton styleClass="btn btn-primary"
+									value="#{messages.loginButtonLabel}"
+									action="#{loginBean.login}" />
+                <input type="reset" class="btn btn-default"
+                  value="#{messages.clearButtonLabel}"/>
+							</div>
+						</div>
+					</h:form>
+
+				</div>
+			</div>
+		</ui:define>
+		<ui:define name="scripts">
+			<h:outputScript library="js" name="login/index.js" />
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

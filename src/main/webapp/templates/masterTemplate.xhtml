@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  lang="en">
+
+<h:head>
+  <meta charset="utf-8"></meta>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <title><ui:insert name="windowTitle"/></title>
+  <link rel="stylesheet" type="text/css" 
+    href="#{request.contextPath}/resources/css/bootstrap.css"></link>
+  <h:outputStylesheet library="css" name="application.css"/>
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</h:head>
+
+<h:body>
+  <div id="heading" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+          data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span> 
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span> 
+          <span class="icon-bar"></span>
+        </button>
+        <h:outputLink styleClass="navbar-brand" value="#{request.contextPath}">#{messages.applicationName}</h:outputLink>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ui:insert name="navbarLinks">
+          <ui:include src="/navbar-links.xhtml"/>
+        </ui:insert>
+        <ui:remove>
+        <div class="nav navbar-nav navbar-right">
+          <ui:insert name="navbarLogin">
+            <span class="navbar-text">Logged in: #{loggedInUserBean.name}</span>        
+          </ui:insert>
+        </div>
+        </ui:remove>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+	  <ui:insert name="content"/>
+  </div>
+  <h:outputScript library="js" name="jquery.js"/>
+  <h:outputScript library="js" name="bootstrap.js"/>
+  <h:outputScript library="js" name="application.js"/>
+  <ui:insert name="scripts"/>
+</h:body>
+
+</html>
