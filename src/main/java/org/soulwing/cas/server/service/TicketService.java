@@ -18,6 +18,7 @@
  */
 package org.soulwing.cas.server.service;
 
+import org.soulwing.cas.server.ServiceResponse;
 import org.soulwing.cas.server.Ticket;
 
 /**
@@ -32,5 +33,12 @@ public interface TicketService {
    * @return authentication ticket.
    */
   Ticket issue();
+  
+  /**
+   * Validates an authentication ticket presented by a user to a service.
+   * @param ticket the ticket to validate
+   * @param service the service to which the ticket was presented
+   */
+  ServiceResponse validate(String ticket, String service);
   
 }
