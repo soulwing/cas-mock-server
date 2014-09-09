@@ -39,7 +39,7 @@ import org.soulwing.cas.server.service.TicketService;
  *
  * @author Carl Harris
  */
-@WebServlet("/login")
+@WebServlet(loadOnStartup = 1)
 public class LoginServlet extends HttpServlet {
 
   private static final long serialVersionUID = 4060870488735584997L;
