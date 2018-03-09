@@ -38,6 +38,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.soulwing.cas.server.ProtocolError;
 import org.soulwing.cas.server.ServiceResponse;
 
 /**
@@ -49,7 +50,7 @@ public class XmlRoundTripTest {
 
   private static final String TICKET = "someTicket";
   private static final String MESSAGE = "someMessage";
-  private static final int CODE = -1;
+  private static final ProtocolError CODE = ProtocolError.INVALID_TICKET;
   private static final String PROXY = "someProxy";
   private static final String PGTIOU = "someTicketIOU";
   private static final String USER = "someUser";

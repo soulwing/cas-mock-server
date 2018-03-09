@@ -30,7 +30,7 @@ public interface ProxyFailureResponseBuilder extends ServiceResponseBuilder {
    * @param code the error code to set
    * @return this builder
    */
-  ProxyFailureResponseBuilder code(int code);
+  ProxyFailureResponseBuilder code(ProtocolError code);
   
   /**
    * Sets the message for the response.

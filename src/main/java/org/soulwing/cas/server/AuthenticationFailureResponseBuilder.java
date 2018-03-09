@@ -31,7 +31,7 @@ public interface AuthenticationFailureResponseBuilder
    * @param code the error code to set
    * @return this builder
    */
-  AuthenticationFailureResponseBuilder code(int code);
+  AuthenticationFailureResponseBuilder code(ProtocolError code);
   
   /**
    * Sets the message for the response.

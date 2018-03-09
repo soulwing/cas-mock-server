@@ -18,6 +18,7 @@
  */
 package org.soulwing.cas.server.protocol;
 
+import org.soulwing.cas.server.ProtocolError;
 import org.soulwing.cas.server.ProxyFailureResponseBuilder;
 
 /**
@@ -35,7 +36,7 @@ class SimpleProxyFailureResponseBuilder
    * {@inheritDoc}
    */
   @Override
-  public ProxyFailureResponseBuilder code(int code) {
+  public ProxyFailureResponseBuilder code(ProtocolError code) {
     result.code = code;
     return this;
   }

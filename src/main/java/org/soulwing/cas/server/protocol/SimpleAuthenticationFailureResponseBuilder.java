@@ -19,6 +19,7 @@
 package org.soulwing.cas.server.protocol;
 
 import org.soulwing.cas.server.AuthenticationFailureResponseBuilder;
+import org.soulwing.cas.server.ProtocolError;
 
 /**
  * A simple {@link AuthenticationFailureResponseBuilder}.
@@ -35,7 +36,7 @@ class SimpleAuthenticationFailureResponseBuilder
    * {@inheritDoc}
    */
   @Override
-  public AuthenticationFailureResponseBuilder code(int code) {
+  public AuthenticationFailureResponseBuilder code(ProtocolError code) {
     result.code = code;
     return this;
   }

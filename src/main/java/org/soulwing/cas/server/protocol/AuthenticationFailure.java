@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import org.soulwing.cas.server.ProtocolError;
+
 /**
  * An {@link ServiceResult} that represents an unsuccessful outcome.
  *
@@ -34,10 +36,9 @@ import javax.xml.bind.annotation.XmlValue;
 public class AuthenticationFailure implements ServiceResult {
 
   @XmlAttribute
-  public Integer code;  
+  public ProtocolError code;
 
   @XmlValue
   public String message;
-  
 
 }

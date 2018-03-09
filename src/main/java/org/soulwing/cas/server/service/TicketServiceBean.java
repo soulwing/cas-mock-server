@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.codec.binary.Base64;
 import org.soulwing.cas.server.LoginContext;
+import org.soulwing.cas.server.ProtocolError;
 import org.soulwing.cas.server.ServiceResponse;
 import org.soulwing.cas.server.ServiceResponseBuilderFactory;
 import org.soulwing.cas.server.Ticket;
@@ -79,7 +80,7 @@ public class TicketServiceBean implements TicketService {
     System.out.println("found ticket " + target);
     if (target == null) {
       return builderFactory.createAuthenticationFailureBuilder()
-          .code(401)
+          .code(ProtocolError.INVALID_TICKET)
           .message("invalid ticket")
           .build();
     }
