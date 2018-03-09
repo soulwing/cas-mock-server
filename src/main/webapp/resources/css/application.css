@@ -1,6 +1,8 @@
 body {
 	padding-top: 50px;
 	padding-bottom: 30px;
+	background-color: #f2f2f2;
+	font-size: 14px;
 }
 
 .form-control-feedback.glyphicon-exclamation-sign {
@@ -110,4 +112,8 @@ td.table-tools a {
 
 .item-icon {
 	padding-right: 5px;
+}
+
+.panel {
+	box-shadow: 0 0 1em #ccc;
 }
