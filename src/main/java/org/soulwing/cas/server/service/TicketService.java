@@ -18,8 +18,11 @@
  */
 package org.soulwing.cas.server.service;
 
+import java.util.Optional;
+
 import org.soulwing.cas.server.ServiceResponse;
 import org.soulwing.cas.server.Ticket;
+import org.soulwing.cas.server.TicketState;
 
 /**
  * A service that issues and validates authentication tickets.
@@ -36,9 +39,9 @@ public interface TicketService {
   
   /**
    * Validates an authentication ticket presented by a user to a service.
-   * @param ticket the ticket to validate
-   * @param service the service to which the ticket was presented
+   * @param ticket the ticket identifier to validate
+   * @return ticket state or {@code null} if ticket is invalid
    */
-  ServiceResponse validate(String ticket, String service);
-  
+  TicketState validate(String ticket);
+
 }

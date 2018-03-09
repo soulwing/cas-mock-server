@@ -20,16 +20,14 @@ package org.soulwing.cas.server.service;
 
 import java.security.SecureRandom;
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.concurrent.ConcurrentMap;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.apache.commons.codec.binary.Base64;
 import org.soulwing.cas.server.LoginContext;
-import org.soulwing.cas.server.ProtocolError;
-import org.soulwing.cas.server.ServiceResponse;
-import org.soulwing.cas.server.ServiceResponseBuilderFactory;
 import org.soulwing.cas.server.Ticket;
+import org.soulwing.cas.server.TicketState;
 
 /**
  * A {@link TicketService} implemented as an injectable bean.
@@ -37,22 +35,16 @@ import org.soulwing.cas.server.Ticket;
  * @author Carl Harris
  */
 @ApplicationScoped
-public class TicketServiceBean implements TicketService {
+class TicketServiceBean implements TicketService {
 
   private final SecureRandom secureRandom = new SecureRandom();
   
-  private final ConcurrentHashMap<String, TicketValue> ticketCache = 
+  private final ConcurrentMap<String, TicketValue> ticketCache =
       new ConcurrentHashMap<>();
   
   @Inject
   LoginContext loginContext;
   
-  @Inject
-  ServiceResponseBuilderFactory builderFactory;
-  
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Ticket issue() {
     
@@ -71,36 +63,21 @@ public class TicketServiceBean implements TicketService {
     return ticket;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public ServiceResponse validate(String ticket, String service) {
-    TicketValue target = ticketCache.get(ticket);
-    System.out.println("found ticket " + target);
-    if (target == null) {
-      return builderFactory.createAuthenticationFailureBuilder()
-          .code(ProtocolError.INVALID_TICKET)
-          .message("invalid ticket")
-          .build();
-    }
-
-    ticketCache.remove(ticket);
-    return builderFactory.createAuthenticationSuccessBuilder()
-        .user(target.getUsername())
-        .build();
-  
+  public TicketState validate(String ticket) {
+    return ticketCache.remove(ticket);
   }
 
-  static class TicketValue implements Ticket {
+  static class TicketValue implements Ticket, TicketState {
     private final String value;
     private final String username;
 
     /**
      * Constructs a new instance.
-     * @param value
+     * @param value ticket string
+     * @param username username
      */
-    public TicketValue(String value, String username) {
+    TicketValue(String value, String username) {
       if (value == null) {
         throw new NullPointerException("value is required");
       }
@@ -119,30 +96,21 @@ public class TicketServiceBean implements TicketService {
       return username;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
       return value.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
-      if (this == obj) return true;
-      if (!(this instanceof TicketValue)) return false;
-      return this.value.equals(((TicketValue) obj).value);
+      return this == obj ||
+          obj instanceof TicketValue
+              && this.value.equals(((TicketValue) obj).value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
-      return value.toString();
+      return value;
     }
     
   }

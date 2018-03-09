@@ -24,7 +24,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.soulwing.cas.server.service.TicketService;
+import org.soulwing.cas.server.ValidationRequest;
+import org.soulwing.cas.server.service.ValidationService;
 
 /**
  * A JAX-RS endpoint that handles CAS protocol requests.
@@ -35,21 +36,35 @@ import org.soulwing.cas.server.service.TicketService;
 public class ProtocolEndpoint {
 
   @Inject
-  TicketService ticketService;
+  ValidationService validationService;
     
   @GET
   @Path("/serviceValidate")
   public Response serviceValidate(@QueryParam("ticket") String ticket,
       @QueryParam("service") String service) {
-    return Response.ok(ticketService.validate(ticket, service)).build();
+    final ValidationRequest request = newValidationRequest(ticket, service);
+    return Response.ok(validationService.validate(
+        request)).build();
   }
 
   @GET
   @Path("/proxyValidate")
   public Response proxyValidate(@QueryParam("ticket") String ticket,
       @QueryParam("service") String service) {
-    return Response.ok(ticketService.validate(ticket, service)).build();
+    final ValidationRequest request = newValidationRequest(ticket, service);
+    return Response.ok(validationService.validate(
+        request)).build();
   }
+
+  private ValidationRequest newValidationRequest(String ticket,
+      String service) {
+
+    final ValidationRequest request = new ValidationRequest();
+    request.setTicket(ticket);
+    request.setService(service);
+    return request;
+  }
+
 
   @GET
   @Path("/proxy")

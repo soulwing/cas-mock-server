@@ -19,12 +19,15 @@
 package org.soulwing.cas.server.web;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
 
 import javax.ws.rs.core.Response;
 
+import org.hamcrest.Matchers;
 import org.jmock.Expectations;
 import org.jmock.auto.Mock;
 import org.jmock.integration.junit4.JUnitRuleMockery;
@@ -32,7 +35,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.soulwing.cas.server.ServiceResponse;
-import org.soulwing.cas.server.service.TicketService;
+import org.soulwing.cas.server.ValidationRequest;
+import org.soulwing.cas.server.service.ValidationService;
 
 /**
  * Unit tests for {@link ProtocolEndpoint}.
@@ -49,7 +53,7 @@ public class ProtocolEndpointTest {
   public final JUnitRuleMockery context = new JUnitRuleMockery();
   
   @Mock
-  private TicketService ticketService;
+  private ValidationService validationService;
   
   @Mock
   private ServiceResponse serviceResponse;
@@ -58,14 +62,17 @@ public class ProtocolEndpointTest {
   
   @Before
   public void setUp() throws Exception {
-    endpoint.ticketService = ticketService;
+    endpoint.validationService = validationService;
   }
 
   @Test
   public void testServiceValidate() throws Exception {
     context.checking(new Expectations() {
       {
-        oneOf(ticketService).validate(TICKET, SERVICE);
+        oneOf(validationService).validate(with(
+            Matchers.<ValidationRequest>allOf(
+                hasProperty("ticket", equalTo(TICKET)),
+                hasProperty("service", equalTo(SERVICE)))));
         will(returnValue(serviceResponse));
       }
     });
@@ -80,7 +87,10 @@ public class ProtocolEndpointTest {
   public void testProxyValidate() throws Exception {
     context.checking(new Expectations() {
       {
-        oneOf(ticketService).validate(TICKET, SERVICE);
+        oneOf(validationService).validate(with(
+            Matchers.<ValidationRequest>allOf(
+                hasProperty("ticket", equalTo(TICKET)),
+                hasProperty("service", equalTo(SERVICE)))));
         will(returnValue(serviceResponse));
       }
     });
