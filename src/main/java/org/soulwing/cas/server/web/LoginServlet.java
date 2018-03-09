@@ -48,10 +48,10 @@ public class LoginServlet extends HttpServlet {
   static final String LOGIN_URL_ATTR = "loginUrl";
   
   @Inject
-  protected LoginContext loginContext;
+  LoginContext loginContext;
   
   @Inject
-  protected TicketService ticketService;
+  TicketService ticketService;
   
   /**
    * {@inheritDoc}

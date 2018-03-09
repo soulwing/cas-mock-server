@@ -44,10 +44,10 @@ public class TicketServiceBean implements TicketService {
       new ConcurrentHashMap<>();
   
   @Inject
-  protected LoginContext loginContext;
+  LoginContext loginContext;
   
   @Inject
-  protected ServiceResponseBuilderFactory builderFactory;
+  ServiceResponseBuilderFactory builderFactory;
   
   /**
    * {@inheritDoc}

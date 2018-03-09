@@ -35,7 +35,7 @@ import org.soulwing.cas.server.service.TicketService;
 public class ProtocolEndpoint {
 
   @Inject
-  protected TicketService ticketService;
+  TicketService ticketService;
     
   @GET
   @Path("/serviceValidate")

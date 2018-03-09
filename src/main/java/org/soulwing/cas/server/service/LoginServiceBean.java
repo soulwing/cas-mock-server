@@ -36,7 +36,7 @@ public class LoginServiceBean implements LoginService {
   static final String FAIL = "fail";
   
   @Inject
-  protected MutableLoginContext loginContext;
+  MutableLoginContext loginContext;
   
   /**
    * {@inheritDoc}

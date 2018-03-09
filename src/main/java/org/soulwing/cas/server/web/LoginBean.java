@@ -42,21 +42,19 @@ import org.soulwing.cas.server.service.NotAuthenticException;
 @RequestScoped
 public class LoginBean {
 
-  static final String SUCCESS_OUTCOME_ID = "success";
-    
   static final String FAILURE_OUTCOME_ID = "failure";
   
   @Inject
-  protected CredentialFactory credentialFactory;
+  CredentialFactory credentialFactory;
   
   @Inject
-  protected LoginService loginService;
+  LoginService loginService;
   
   @Inject
-  protected Errors errors;
+  Errors errors;
   
   @Inject
-  protected FacesContext facesContext;
+  FacesContext facesContext;
   
   private String loginUrl;
   

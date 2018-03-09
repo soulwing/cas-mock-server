@@ -38,7 +38,7 @@ public class RootViewBean {
   static final String LOGIN_PATH = "/login/index.xhtml";
   
   @Inject
-  protected FacesContext facesContext;
+  FacesContext facesContext;
   
   /**
    * Determines where to redirect a user who arrives at the root view.

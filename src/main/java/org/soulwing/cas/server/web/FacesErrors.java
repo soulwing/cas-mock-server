@@ -37,7 +37,7 @@ import javax.inject.Inject;
 public class FacesErrors implements Errors {
 
   @Inject
-  protected FacesContext facesContext;
+  FacesContext facesContext;
 
   private ResourceBundle bundle;
   
