@@ -26,6 +26,12 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
+  <servlet>
+    <servlet-name>org.soulwing.cas.server.web.LogoutServlet</servlet-name>
+    <servlet-class>org.soulwing.cas.server.web.LogoutServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>faces-servlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
@@ -34,6 +40,11 @@
   <servlet-mapping>
     <servlet-name>org.soulwing.cas.server.web.LoginServlet</servlet-name>
     <url-pattern>/cas/login</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>org.soulwing.cas.server.web.LogoutServlet</servlet-name>
+    <url-pattern>/cas/logout</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
