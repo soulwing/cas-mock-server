@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -45,5 +46,9 @@ public class AuthenticationSuccess implements ServiceResult {
   @XmlElementWrapper(name = "proxies")
   @XmlElement(name = "proxy")
   public List<String> proxies = new ArrayList<>();
+
+  @XmlElementWrapper(name = "attributes")
+  @XmlAnyElement(lax = true)
+  public List<Object> attributes = new ArrayList<>();
 
 }

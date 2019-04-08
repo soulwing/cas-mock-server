@@ -18,9 +18,11 @@
  */
 package org.soulwing.cas.server.service;
 
+import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.soulwing.cas.server.AttributeValue;
 import org.soulwing.cas.server.ProtocolError;
 import org.soulwing.cas.server.ServiceResponse;
 import org.soulwing.cas.server.ServiceResponseBuilderFactory;
@@ -41,6 +43,9 @@ class ValidationServiceBean implements ValidationService {
   @Inject
   ServiceResponseBuilderFactory builderFactory;
 
+  @Inject
+  AttributesService attributesService;
+
   @Override
   public ServiceResponse validate(ValidationRequest request) {
     final TicketState state = ticketService.validate(request.getTicket());
@@ -51,8 +56,13 @@ class ValidationServiceBean implements ValidationService {
           .build();
     }
 
+    final String username = state.getUsername();
+    final List<AttributeValue> attributes =
+        attributesService.getAttributes(username);
+
     return builderFactory.createAuthenticationSuccessBuilder()
-        .user(state.getUsername())
+        .user(username)
+        .attributes(attributes)
         .build();
   }
 

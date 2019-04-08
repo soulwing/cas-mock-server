@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
+import java.util.Collections;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -38,6 +39,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.soulwing.cas.server.AttributeValue;
 import org.soulwing.cas.server.ProtocolError;
 import org.soulwing.cas.server.ServiceResponse;
 
@@ -78,9 +80,9 @@ public class XmlRoundTripTest {
         .user(USER)
         .proxyGrantingTicket(PGTIOU)
         .proxy(PROXY)
+        .attributes(Collections.singletonList(AttributeValue.of("memberOf", "foo.bar.baz")))
         .build();
-    
-    
+
     ServiceResponse inResponse = xmlRoundTrip(outResponse);
     assertThat(inResponse, is(instanceOf(ServiceResponseBase.class)));
     assertThat(((ServiceResponseBase) inResponse).result, 

@@ -18,7 +18,15 @@
  */
 package org.soulwing.cas.server.protocol;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.soulwing.cas.server.AttributeValue;
 import org.soulwing.cas.server.AuthenticationSuccessResponseBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * A simple {@link AuthenticationSuccessResponseBuilder}.
@@ -31,18 +39,12 @@ class SimpleAuthenticationSuccessResponseBuilder
 
   private final AuthenticationSuccess result = new AuthenticationSuccess();
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public AuthenticationSuccessResponseBuilder user(String user) {
     result.user = user;
     return this;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public AuthenticationSuccessResponseBuilder proxyGrantingTicket(
       String pgtiou) {
@@ -50,18 +52,35 @@ class SimpleAuthenticationSuccessResponseBuilder
     return this;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public AuthenticationSuccessResponseBuilder proxy(String proxy) {
     result.proxies.add(proxy);
     return this;
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  @Override
+  public AuthenticationSuccessResponseBuilder attributes(
+      List<AttributeValue> attributes) {
+
+    try {
+      final Document document = DocumentBuilderFactory.newInstance()
+          .newDocumentBuilder().newDocument();
+      final List<Element> elements = new ArrayList<>();
+      for (final AttributeValue attribute : attributes) {
+        final Element element = document.createElementNS(Namespace.CAS,
+            attribute.getName());
+        element.setPrefix(Namespace.PREFIX);
+        element.setTextContent(attribute.getValue().toString());
+        elements.add(element);
+      }
+      result.attributes.addAll(elements);
+      return this;
+    }
+    catch (ParserConfigurationException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
   @Override
   protected ServiceResult getResult() {
     return result;

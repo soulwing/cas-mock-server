@@ -18,6 +18,8 @@
  */
 package org.soulwing.cas.server;
 
+import java.util.List;
+
 /**
  * A builder for a successful authentication response.
  *
@@ -46,5 +48,13 @@ public interface AuthenticationSuccessResponseBuilder
    * @return this builder
    */
   AuthenticationSuccessResponseBuilder proxy(String proxy);
-  
+
+  /**
+   * Adds a collection of named attributes to the response.
+   * @param attributes the attributes to add
+   * @return this builder
+   */
+  AuthenticationSuccessResponseBuilder attributes(List<AttributeValue> attributes);
+
+
 }

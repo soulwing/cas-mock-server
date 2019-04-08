@@ -22,12 +22,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
 
+import java.util.Collections;
+
 import org.jmock.Expectations;
 import org.jmock.auto.Mock;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.soulwing.cas.server.AttributeValue;
 import org.soulwing.cas.server.AuthenticationFailureResponseBuilder;
 import org.soulwing.cas.server.AuthenticationSuccessResponseBuilder;
 import org.soulwing.cas.server.ProtocolError;
@@ -46,6 +49,7 @@ public class ValidationServiceBeanTest {
   private static final String TICKET = "ticket";
   private static final String SERVICE = "service";
   private static final String USERNAME = "username";
+  private static final AttributeValue ATTRIBUTE = AttributeValue.of("foo", "bar");
 
   @Rule
   public final JUnitRuleMockery context = new JUnitRuleMockery();
@@ -68,6 +72,9 @@ public class ValidationServiceBeanTest {
   @Mock
   private ServiceResponse response;
 
+  @Mock
+  private AttributesService attributesService;
+
   private ValidationRequest request = new ValidationRequest();
 
   private ValidationServiceBean service = new ValidationServiceBean();
@@ -76,7 +83,7 @@ public class ValidationServiceBeanTest {
   public void setUp() throws Exception {
     service.ticketService = ticketService;
     service.builderFactory = builderFactory;
-
+    service.attributesService = attributesService;
     request.setTicket(TICKET);
     request.setService(SERVICE);
   }
@@ -89,9 +96,13 @@ public class ValidationServiceBeanTest {
         will(returnValue(ticketState));
         allowing(ticketState).getUsername();
         will(returnValue(USERNAME));
+        oneOf(attributesService).getAttributes(USERNAME);
+        will(returnValue(Collections.singletonList(ATTRIBUTE)));
         oneOf(builderFactory).createAuthenticationSuccessBuilder();
         will(returnValue(successBuilder));
         oneOf(successBuilder).user(USERNAME);
+        will(returnValue(successBuilder));
+        oneOf(successBuilder).attributes(Collections.singletonList(ATTRIBUTE));
         will(returnValue(successBuilder));
         oneOf(successBuilder).build();
         will(returnValue(response));
