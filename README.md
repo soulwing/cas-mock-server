@@ -11,11 +11,15 @@ This mock CAS server has no configured users and allows any credentials in which
 
 ## Running with Docker
 
-A Dockerfile is provided to make it easy to run the mock server. The Docker image includes a Tomcat 8 server and deploys the mock server at the server root.
+Docker Hub is configured to perform automated builds for all code pushes to this repo. The image is available at [soulwing/cas-mock-server](https://hub.docker.com/r/soulwing/cas-mock-server).
+
+```
+docker container run -dp 8080:8080 soulwing/cas-mock-server
+```
 
 ### Building
 
-To build, simply build using Docker:
+A Dockerfile is provided to make it easy to run the mock server. The Docker image includes a Tomcat 8 server and deploys the mock server at the server root. To build, simply build using Docker:
 
 ```
 docker image build -t cas-mock-server .
