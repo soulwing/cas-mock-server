@@ -24,6 +24,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.json.Json;
@@ -43,10 +45,11 @@ import org.soulwing.cas.server.AttributeValue;
 @Dependent
 class JsonAttributesService implements AttributesService {
 
+  private static final Logger logger = Logger.getLogger(
+      JsonAttributesService.class.getName());
+
   private static final String ATTRIBUTES_JSON_URL = "ATTRIBUTES_JSON_URL";
   private static final String DEFAULT_URI = "classpath:attributes.json";
-
-  private static final String DEFAULT_INHERIT_FROM = "DEFAULT";
 
   private final URI uri;
 
@@ -72,6 +75,10 @@ class JsonAttributesService implements AttributesService {
       try (final InputStream inputStream =
           ResourceAccessor.getResourceAsStream(uri)) {
         attributes = Json.createReader(inputStream).readObject();
+        logger.info("loaded attributes from " + uri);
+        if (logger.isLoggable(Level.FINE)) {
+          logger.fine(attributes.toString());
+        }
       }
     }
     catch (IOException ex) {
