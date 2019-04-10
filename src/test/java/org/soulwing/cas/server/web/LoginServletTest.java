@@ -50,7 +50,8 @@ public class LoginServletTest {
   private static final String LOGIN_URL = "someLoginUrl";
 
   private static final String QUERY_STRING = "someQuery";
-  
+  private static final String USERNAME = "username";
+
   @Rule
   public final JUnitRuleMockery context = new JUnitRuleMockery();
   
@@ -87,7 +88,9 @@ public class LoginServletTest {
   public void testContextIsAuthentic() throws Exception {
     context.checking(new Expectations() {
       {
-        oneOf(loginContext).isAuthentic();
+        allowing(loginContext).getUsername();
+        will(returnValue(USERNAME));
+        allowing(loginContext).isAuthentic();
         will(returnValue(true));
         oneOf(request).getParameter(ProtocolConstants.SERVICE_PARAM);
         will(returnValue(SERVICE_URL));
@@ -107,7 +110,9 @@ public class LoginServletTest {
   public void testContextIsNotAuthentic() throws Exception {
     context.checking(new Expectations() {
       {
-        oneOf(loginContext).isAuthentic();
+        allowing(loginContext).getUsername();
+        will(returnValue(USERNAME));
+        allowing(loginContext).isAuthentic();
         will(returnValue(false));
         oneOf(request).getRequestURL();
         will(returnValue(requestUrl));
