@@ -93,6 +93,9 @@ class JsonAttributesService implements AttributesService {
     if (user == null) return Collections.emptyList();
     final String inheritFrom = user.getString("inherit", null);
     if (inheritFrom != null) {
+      if (inheritFrom.equals(username)) {
+        throw new IllegalArgumentException("don't be an idiot");
+      }
       list.addAll(getAttributes(inheritFrom));
     }
     list.addAll(getValues(user.getJsonObject("attributes")));
