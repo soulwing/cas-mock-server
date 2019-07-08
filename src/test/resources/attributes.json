@@ -1,20 +1,18 @@
 {
   "DEFAULT": {
     "attributes": {
+      "affiliation": "EMPLOYEE",
       "groupMembership": "valid-user"
     }
   },
   "fletcher": {
     "inherit": "DEFAULT",
     "attributes": {
-      "uid": 13,
-      "active": true,
+      "uid": 1,
       "displayName": "Jordan Fletcher",
-      "mailPreferredAddress": "fletcher@crest.edu",
       "groupMembership": [
-          "research.summit.app.pre-award",
-          "research.summit.app.pre-award-manager",
-          "research.summit.app.app-admin"
+          "admin",
+          "power-user"
       ]
     }
   }
