@@ -21,7 +21,6 @@ package org.soulwing.cas.server.web;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import javax.inject.Inject;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -31,7 +30,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.UriBuilder;
 
 import org.soulwing.cas.server.LoginContext;
+import org.soulwing.cas.server.domain.CredentialBean;
 import org.soulwing.cas.server.protocol.ProtocolConstants;
+import org.soulwing.cas.server.service.AuthenticationException;
+import org.soulwing.cas.server.service.LoginService;
+import org.soulwing.cas.server.service.NotAuthenticException;
 import org.soulwing.cas.server.service.TicketService;
 
 /**
@@ -52,10 +55,10 @@ public class LoginServlet extends HttpServlet {
   
   @Inject
   TicketService ticketService;
-  
-  /**
-   * {@inheritDoc}
-   */
+
+  @Inject
+  LoginService loginService;
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws IOException, ServletException {
@@ -73,7 +76,29 @@ public class LoginServlet extends HttpServlet {
     }
   }
 
-  private UriBuilder createServiceUriBuilder(String service) 
+  @Override
+  protected void doPost(HttpServletRequest request,
+      HttpServletResponse response) throws ServletException, IOException {
+    final CredentialBean credential = new CredentialBean();
+    credential.setUsername(request.getParameter("username"));
+    credential.setPassword(request.getParameter("password"));
+    try {
+      loginService.authenticate(credential);
+      response.sendRedirect(request.getRequestURL()
+          .append("?").append(request.getQueryString())
+          .toString());
+    }
+    catch (NotAuthenticException ex) {
+      response.setStatus(401);
+      response.setContentType("text/plain");
+      response.getWriter().write("Unauthorized\n");
+    }
+    catch (AuthenticationException ex) {
+      throw new ServletException(ex);
+    }
+  }
+
+  private UriBuilder createServiceUriBuilder(String service)
       throws ServletException {
     if (service == null) {
       throw new ServletException("service URL is required");
