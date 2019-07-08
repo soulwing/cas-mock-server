@@ -24,6 +24,7 @@ import java.util.ServiceLoader;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 
 import org.soulwing.cas.server.AttributeValue;
 import org.soulwing.cas.server.service.spi.AttributesServiceProvider;
@@ -67,6 +68,7 @@ class AttributesServiceBean implements AttributesService {
     return delegate.getAttributes(username);
   }
 
+  @Alternative
   private static class NoOpAttributesService implements AttributesService {
 
     @Override
