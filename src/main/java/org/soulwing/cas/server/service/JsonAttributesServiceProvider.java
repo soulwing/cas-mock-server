@@ -88,6 +88,10 @@ public class JsonAttributesServiceProvider implements AttributesServiceProvider 
     }
   }
 
+  @Override
+  public void destroy() {
+  }
+
   private static class JsonAttributesService implements AttributesService {
 
     private final JsonObject attributes;

@@ -40,4 +40,10 @@ public interface AttributesServiceProvider {
    */
   AttributesService getInstance();
 
+  /**
+   * Notifies the provider that it is no longer needed.
+   */
+  void destroy();
+
+
 }

@@ -19,6 +19,7 @@
 package org.soulwing.cas.server.service;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,6 +44,7 @@ public class JdbcAttributesServiceProvider
   private static final Logger logger = Logger.getLogger(
       JdbcAttributesServiceProvider.class.getName());
 
+  public static final String ATTRIBUTES_JDBC_DRIVER = "ATTRIBUTES_JDBC_DRIVER";
   public static final String ATTRIBUTES_JDBC_URL = "ATTRIBUTES_JDBC_URL";
   public static final String ATTRIBUTES_JDBC_USERNAME = "ATTRIBUTES_JDBC_USERNAME";
   public static final String ATTRIBUTES_JDBC_PASSWORD = "ATTRIBUTES_JDBC_PASSWORD";
@@ -61,6 +63,8 @@ public class JdbcAttributesServiceProvider
     this.environment = environment;
   }
 
+  private Driver driver;
+
   @Override
   public String getName() {
     return "JDBC";
@@ -68,6 +72,13 @@ public class JdbcAttributesServiceProvider
 
   @Override
   public AttributesService getInstance() {
+    final String driverClassName = environment.getEnv(ATTRIBUTES_JDBC_DRIVER);
+
+    if (driverClassName != null) {
+      driver = registerDriver(driverClassName);
+      if (driver == null) return null;
+    }
+
     final String url = environment.getEnv(ATTRIBUTES_JDBC_URL);
     final String username = environment.getEnv(ATTRIBUTES_JDBC_USERNAME);
     final String password = environment.getEnv(ATTRIBUTES_JDBC_PASSWORD);
@@ -75,6 +86,7 @@ public class JdbcAttributesServiceProvider
     final String userColumns = environment.getEnv(ATTRIBUTES_JDBC_USER_COLUMNS);
     final String groupQuery = environment.getEnv(ATTRIBUTES_JDBC_GROUP_QUERY);
     final String groupColumns = environment.getEnv(ATTRIBUTES_JDBC_GROUP_COLUMNS);
+
 
     if (url == null || userQuery == null || userColumns == null) {
       return null;
@@ -87,12 +99,45 @@ public class JdbcAttributesServiceProvider
     }
     catch (SQLException ex) {
       logger.warning("cannot create connection using JDBC url " + url
-          + " and provided username and password");
+          + " and provided username and password: " + ex.getMessage());
       return null;
     }
 
     return new JdbcAttributesProvider(url, username, password, userQuery,
         userColumns, groupQuery, groupColumns);
+  }
+
+  @Override
+  public void destroy() {
+    if (driver != null) {
+      deregisterDriver(driver);
+    }
+  }
+
+  private static Driver registerDriver(String className) {
+    try {
+      final Class<?> driverClass = Class.forName(className);
+      final Driver driver = (Driver) driverClass.newInstance();
+      DriverManager.registerDriver(driver);
+      return driver;
+    }
+    catch (ClassNotFoundException
+        | InstantiationException
+        | IllegalAccessException
+        | SQLException ex) {
+      logger.warning("cannot register JDBC driver " + className + ": "
+          + ex.getMessage());
+      return null;
+    }
+  }
+
+  private static void deregisterDriver(Driver driver) {
+    try {
+      DriverManager.deregisterDriver(driver);
+    }
+    catch (SQLException ex) {
+      logger.warning("error de-registering JDBC driver: " + ex.getMessage());
+    }
   }
 
   static class JdbcAttributesProvider implements AttributesService {
@@ -147,6 +192,7 @@ public class JdbcAttributesServiceProvider
       final List<AttributeValue> attributes = new ArrayList<>();
       try (final PreparedStatement statement =
           connection.prepareStatement(userQuery)) {
+        logger.info("query: " + userQuery);
         statement.setString(1, username);
         try (final ResultSet rs = statement.executeQuery()) {
           int columnCount = rs.getMetaData().getColumnCount();
@@ -166,6 +212,7 @@ public class JdbcAttributesServiceProvider
       final List<AttributeValue> attributes = new ArrayList<>();
       try (final PreparedStatement statement =
           connection.prepareStatement(groupQuery)) {
+        logger.info("query: " + groupQuery);
         statement.setString(1, username);
         try (final ResultSet rs = statement.executeQuery()) {
           while (rs.next()) {

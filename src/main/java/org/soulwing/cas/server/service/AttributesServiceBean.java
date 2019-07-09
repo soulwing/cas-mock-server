@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 
@@ -43,14 +44,17 @@ class AttributesServiceBean implements AttributesService {
   private static final Logger logger =
       Logger.getLogger(AttributesServiceBean.class.getName());
 
+  private AttributesServiceProvider provider;
   private AttributesService delegate;
 
   @PostConstruct
   public void init() {
+    logger.info("initializing attributes service");
     for (final AttributesServiceProvider provider :
       ServiceLoader.load(AttributesServiceProvider.class)) {
-      delegate = provider.getInstance();
+      this.delegate = provider.getInstance();
       if (delegate != null) {
+        this.provider = provider;
         logger.info("attributes will be obtained from the `"
             + provider.getName() + "` provider");
         break;
@@ -63,9 +67,18 @@ class AttributesServiceBean implements AttributesService {
     }
   }
 
+  @PreDestroy
+  public void destroy() {
+    if (provider != null) {
+      provider.destroy();
+    }
+  }
+
   @Override
   public List<AttributeValue> getAttributes(String username) {
-    return delegate.getAttributes(username);
+    final List<AttributeValue> attributes = delegate.getAttributes(username);
+    logger.info("attributes for " + username + ": " + attributes);
+    return attributes;
   }
 
   @Alternative
