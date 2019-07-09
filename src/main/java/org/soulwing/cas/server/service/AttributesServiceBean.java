@@ -77,7 +77,7 @@ class AttributesServiceBean implements AttributesService {
   @Override
   public List<AttributeValue> getAttributes(String username) {
     final List<AttributeValue> attributes = delegate.getAttributes(username);
-    logger.info("attributes for " + username + ": " + attributes);
+    logger.info("attributes released for " + username + ": " + attributes);
     return attributes;
   }
 

@@ -192,7 +192,6 @@ public class JdbcAttributesServiceProvider
       final List<AttributeValue> attributes = new ArrayList<>();
       try (final PreparedStatement statement =
           connection.prepareStatement(userQuery)) {
-        logger.info("query: " + userQuery);
         statement.setString(1, username);
         try (final ResultSet rs = statement.executeQuery()) {
           int columnCount = rs.getMetaData().getColumnCount();
@@ -212,7 +211,6 @@ public class JdbcAttributesServiceProvider
       final List<AttributeValue> attributes = new ArrayList<>();
       try (final PreparedStatement statement =
           connection.prepareStatement(groupQuery)) {
-        logger.info("query: " + groupQuery);
         statement.setString(1, username);
         try (final ResultSet rs = statement.executeQuery()) {
           while (rs.next()) {
