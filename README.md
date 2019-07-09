@@ -98,6 +98,9 @@ You configure the JDBC attributes provider by specifying several different
 environment variables.
 
 * ATTRIBUTES_JDBC_URL - full JDBC URL for the database
+* ATTRIBUTES_JDBC_DRIVER - (optional) fully-qualified class name of the JDBC
+  driver; this is needed mostly for Tomcat which does not automatically register
+  JDBC drivers
 * ATTRIBUTES_JDBC_USERNAME - (optional) database username
 * ATTRIBUTES_JDBC_PASSWORD - (optional) database password
 * ATTRIBUTES_JDBC_USER_QUERY - SQL query that will return the attributes using a
@@ -113,10 +116,12 @@ environment variables.
   
 > **IMPORTANT**:
 > In order to use the JDBC attribute provider, you must also arrange to include
-> the JDBC driver in the deployment for the Mock CAS server. Assuming that 
+> the JDBC driver in the classpath for the mock CAS server. If you're using
+> PostgreSQL or MySQL as a database, reasonably current versions of those
+> drivers are bundled with the CAS server. If you need another driver, and  
 > you're using the Mock CAS server container image that is based on Tomcat,
-> you can do this by create a custom container image based on the image for
-> mock CAS server that copies the JDBC driver into Tomcat's `lib/` directory.
+> you can create a custom container image based on the image for
+> mock CAS server that copies your JDBC driver into Tomcat's `lib/` directory.
 
 For example, suppose your database has an `app_user` table that describes 
 each user.
