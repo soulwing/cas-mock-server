@@ -18,12 +18,6 @@
  */
 package org.soulwing.cas.server.service;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-
 import org.jmock.Expectations;
 import org.jmock.auto.Mock;
 import org.jmock.integration.junit4.JUnitRuleMockery;
@@ -33,6 +27,9 @@ import org.junit.Test;
 import org.soulwing.cas.server.LoginContext;
 import org.soulwing.cas.server.Ticket;
 import org.soulwing.cas.server.TicketState;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Unit tests for {@link TicketServiceBean}.
@@ -67,6 +64,7 @@ public class TicketServiceBeanTest {
 
     final Ticket ticket = service.issue();
     assertThat(ticket.toString(), is(not(nullValue())));
+    assertThat(ticket.toString(), startsWith("ST-"));
 
     final TicketState state = service.validate(ticket.toString());
     assertThat(state, is(not(nullValue())));

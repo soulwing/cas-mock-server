@@ -54,7 +54,7 @@ class TicketServiceBean implements TicketService {
     
     do {
       secureRandom.nextBytes(data);
-      String id = Base64.encodeBase64URLSafeString(data);
+      String id = "ST-" + Base64.encodeBase64URLSafeString(data);
       ticket = new TicketValue(id, loginContext.getUsername());
       prior = ticketCache.putIfAbsent(id, ticket);
     }
