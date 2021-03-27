@@ -56,9 +56,22 @@ public class ProtocolEndpoint {
         request)).build();
   }
 
+  @GET
+  @Path("/p3/serviceValidate")
+  public Response p3ServiceValidate(@QueryParam("ticket") String ticket,
+      @QueryParam("service") String service) {
+    return serviceValidate(ticket, service);
+  }
+
+  @GET
+  @Path("/p3/proxyValidate")
+  public Response p3ProxyValidate(@QueryParam("ticket") String ticket,
+      @QueryParam("service") String service) {
+    return proxyValidate(ticket, service);
+  }
+
   private ValidationRequest newValidationRequest(String ticket,
       String service) {
-
     final ValidationRequest request = new ValidationRequest();
     request.setTicket(ticket);
     request.setService(service);

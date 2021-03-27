@@ -19,7 +19,6 @@
 package org.soulwing.cas.server.web;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
@@ -67,25 +66,41 @@ public class ProtocolEndpointTest {
 
   @Test
   public void testServiceValidate() throws Exception {
-    context.checking(new Expectations() {
-      {
-        oneOf(validationService).validate(with(
-            Matchers.<ValidationRequest>allOf(
-                hasProperty("ticket", equalTo(TICKET)),
-                hasProperty("service", equalTo(SERVICE)))));
-        will(returnValue(serviceResponse));
-      }
-    });
+    context.checking(validationServiceExpectations());
     
     Response response = endpoint.serviceValidate(TICKET, SERVICE);
+    validateResponse(response);
+  }
+
+  @Test
+  public void testP3ServiceValidate() throws Exception {
+    context.checking(validationServiceExpectations());
+    Response response = endpoint.p3ServiceValidate(TICKET, SERVICE);
+    validateResponse(response);
+  }
+
+  @Test
+  public void testP3ProxyValidate() throws Exception {
+    context.checking(validationServiceExpectations());
+    Response response = endpoint.p3ProxyValidate(TICKET, SERVICE);
+    validateResponse(response);
+  }
+
+  @Test
+  public void testProxyValidate() throws Exception {
+    context.checking(validationServiceExpectations());
+    Response response = endpoint.proxyValidate(TICKET, SERVICE);
+    validateResponse(response);
+  }
+
+  private void validateResponse(Response response) {
     assertThat(response.getStatus(), is(equalTo(200)));
     assertThat((ServiceResponse) response.getEntity(),
         is(sameInstance(serviceResponse)));
   }
 
-  @Test
-  public void testProxyValidate() throws Exception {
-    context.checking(new Expectations() {
+  private Expectations validationServiceExpectations() {
+    return new Expectations() {
       {
         oneOf(validationService).validate(with(
             Matchers.<ValidationRequest>allOf(
@@ -93,13 +108,7 @@ public class ProtocolEndpointTest {
                 hasProperty("service", equalTo(SERVICE)))));
         will(returnValue(serviceResponse));
       }
-    });
-    
-    Response response = endpoint.proxyValidate(TICKET, SERVICE);
-    assertThat(response.getStatus(), is(equalTo(200)));
-    assertThat((ServiceResponse) response.getEntity(),
-        is(sameInstance(serviceResponse)));
+    };
   }
-  
 
 }
