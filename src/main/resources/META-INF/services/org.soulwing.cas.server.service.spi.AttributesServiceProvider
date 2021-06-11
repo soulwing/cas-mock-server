@@ -1,2 +1,3 @@
 org.soulwing.cas.server.service.JsonAttributesServiceProvider
 org.soulwing.cas.server.service.JdbcAttributesServiceProvider
+org.soulwing.cas.server.service.LdapAttributesServiceProvider
