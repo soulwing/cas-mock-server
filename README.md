@@ -196,4 +196,4 @@ After creating your provider, you must arrange to make it available on the
 classpath of the mock CAS server. Assuming you are using the mock CAS server
 variant that runs on top of Tomcat, you can do this by creating a custom
 container image based on `cas-mock-server` image and copying the provider's JAR
-file into Tomcat's `lib\` directory.
+file into Tomcat's `lib/` directory.
