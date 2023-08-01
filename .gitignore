@@ -5,11 +5,13 @@ RCS
 .settings
 .project
 .metadata
+.idea
 target
 build
 DerivedData
 derby.log
 
+*.iml
 *.class
 *.o
 *.com
