@@ -35,12 +35,9 @@ jobs:
           aws-region: us-east-1
       - name: Build and push image to Summit ECR Repository
         uses: docker/build-push-action@v2
-        env:
-          ECR_REGISTRY: public.ecr.aws/summit-docker-registry
-          ECR_REPOSITORY: summit/cas-mock-server
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${ECR_REGISTRY}/${ECR_REPOSITORY}
+          tags: public.ecr.aws/summit-docker-registry/summit/cas-mock-server:latest
 
