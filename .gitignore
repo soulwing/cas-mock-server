@@ -10,7 +10,8 @@ target
 build
 DerivedData
 derby.log
-
+.terraform/
+*.lock.hcl
 *.iml
 *.class
 *.o
