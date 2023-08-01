@@ -7,19 +7,19 @@ jobs:
   build:
     name: Buiild and push docker image
     runs-on: ubuntu-latest
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Login in Docker Hub
-      uses: docker/login-action@v1
-      with: 
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}}
-    - name: Build and push image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: soulwing/cas-mock-server:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login in Docker Hub
+        uses: docker/login-action@v1
+        with: 
+            username: ${{ secrets.DOCKER_HUB_USERNAME }}
+            password: ${{ secrets.DOCKER_HUB_PASSWORD }}}
+      - name: Build and push image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: soulwing/cas-mock-server:latest
 
 
