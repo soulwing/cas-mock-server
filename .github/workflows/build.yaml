@@ -3,9 +3,12 @@ on:
   push:
     branches:
       - master
+  schedule:
+      - cron:  '4 30 1 * *'
+
 jobs:
   build:
-    name: Buiild and push docker image
+    name: Build and push docker image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
