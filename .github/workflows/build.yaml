@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+on:
   schedule:
       - cron:  '4 30 1 * *'
 
