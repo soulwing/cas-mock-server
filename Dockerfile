@@ -11,6 +11,10 @@ RUN mvn install -P tomcat
 
 
 FROM --platform=${TARGETPLATFORM} tomcat:8-jdk8-corretto
-RUN rm -rf $CATALINA_HOME/webapps/ROOT
+RUN yum update -y && \
+    yum install -y curl ca-certificates && \
+    yum clean all && \
+    rm -rf /var/cache/yum && \
+    rm -rf $CATALINA_HOME/webapps/ROOT
 COPY --from=tomcat-build /app/target/*.war $CATALINA_HOME/webapps/ROOT.war
 
